@@ -32,13 +32,13 @@ namespace ctranslate2 {
                bool a_is_packed,
                bool b_is_packed,
                const ActivationType* activation_type)
-      : _alpha(alpha)
+      : _activation_type(activation_type)
+      , _alpha(alpha)
       , _beta(beta)
       , _trans_a(trans_a)
       , _trans_b(trans_b)
       , _a_is_packed(a_is_packed)
       , _b_is_packed(b_is_packed)
-      , _activation_type(activation_type)
     {
     }
 
