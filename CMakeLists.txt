@@ -298,6 +298,18 @@ if(ENABLE_CPU_DISPATCH)
   message(STATUS "Compiling for multiple CPU ISA and enabling runtime dispatch")
   add_definitions(-DCT2_WITH_CPU_DISPATCH)
   if(CT2_BUILD_ARCH STREQUAL "x86_64")
+    # Keep the default kernels translation unit at a generic ISA so it does not
+    # duplicate symbols emitted by ISA-specific generated files when users set
+    # aggressive global flags (e.g. -march=native).
+    if(MSVC)
+      set_source_files_properties(src/cpu/kernels.cc PROPERTIES COMPILE_FLAGS "/arch:SSE2")
+    else()
+      set_source_files_properties(
+        src/cpu/kernels.cc
+        PROPERTIES COMPILE_FLAGS
+                   "-mno-avx -mno-avx2 -mno-avx512f -mno-avx512cd -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-fma")
+    endif()
+
     if(MSVC)
       ct2_compile_kernels_for_isa(avx "/arch:AVX")
       ct2_compile_kernels_for_isa(avx2 "/arch:AVX2")
