@@ -48,6 +48,11 @@ namespace ctranslate2 {
     }
 
     GemmBackend get_gemm_backend(ComputeType compute_type) {
+#if !defined(CT2_WITH_MKL) && !defined(CT2_WITH_DNNL) && !defined(CT2_WITH_ACCELERATE) \
+  && !defined(CT2_WITH_OPENBLAS) && !defined(CT2_WITH_RUY)
+      (void)compute_type;
+#endif
+
 #if defined(CT2_WITH_MKL) || defined(CT2_WITH_DNNL) || defined(CT2_WITH_RUY)
       const bool is_int8 = (compute_type == ComputeType::INT8
                             || compute_type == ComputeType::INT8_FLOAT32
