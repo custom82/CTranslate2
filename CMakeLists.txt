@@ -262,13 +262,16 @@ set(LIBRARIES
   )
 
 macro(ct2_compile_kernels_for_isa isa flag)
+  string(TOUPPER "${isa}" isa_upper)
   configure_file(
     src/cpu/kernels.cc
     ${CMAKE_CURRENT_BINARY_DIR}/kernels_${isa}.cc
     COPYONLY)
   set_source_files_properties(
     ${CMAKE_CURRENT_BINARY_DIR}/kernels_${isa}.cc
-    PROPERTIES COMPILE_FLAGS ${flag})
+    PROPERTIES
+      COMPILE_FLAGS ${flag}
+      COMPILE_DEFINITIONS CT2_FORCE_TARGET_ISA_${isa_upper})
   list(APPEND SOURCES ${CMAKE_CURRENT_BINARY_DIR}/kernels_${isa}.cc)
 endmacro()
 
