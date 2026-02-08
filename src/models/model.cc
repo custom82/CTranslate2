@@ -483,11 +483,11 @@ namespace ctranslate2 {
               return VARIABLE_TYPE::SELF_ATTN_LINEAR_0_BIAS;
             if (parameterName == "weight")
               return VARIABLE_TYPE::SELF_ATTN_LINEAR_0_WEIGHT;
-            else
-              return VARIABLE_TYPE::SELF_ATTN_LINEAR_0_WEIGHT_SCALE;
-	        case 1:
+            return VARIABLE_TYPE::SELF_ATTN_LINEAR_0_WEIGHT_SCALE;
+          case 1:
             if (parameterName == "weight")
               return VARIABLE_TYPE::SELF_ATTN_LINEAR_1_WEIGHT;
+            return VARIABLE_TYPE::OTHERS;
           default:
             return VARIABLE_TYPE::OTHERS;
         };
@@ -512,6 +512,7 @@ namespace ctranslate2 {
           case 2:
             if (parameterName == "weight")
               return VARIABLE_TYPE::ATTN_LINEAR_2_WEIGHT;
+            return VARIABLE_TYPE::OTHERS;
           default:
             return VARIABLE_TYPE::OTHERS;
         };
@@ -537,6 +538,7 @@ namespace ctranslate2 {
           case 1:
             if (parameterName == "weight")
               return VARIABLE_TYPE::FFN_LINEAR_1_WEIGHT;
+            return VARIABLE_TYPE::OTHERS;
           default:
             return VARIABLE_TYPE::OTHERS;
         };
@@ -567,8 +569,8 @@ namespace ctranslate2 {
         std::call_once(log_once, log_system_config);
       }
 
-      int world_size;
-      int current_index;
+      int world_size = 1;
+      int current_index = 0;
       if (tensor_parallel) {
         ScopedMPISetter mpi_setter = ScopedMPISetter();
         device_index = ScopedMPISetter::getLocalRank();
