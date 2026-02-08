@@ -24,7 +24,8 @@ namespace ctranslate2 {
           perm[i] = x.rank() - i - 1;
         identity = false;
       } else {
-        assert(_perm.size() == x.rank());
+        assert(x.rank() >= 0);
+        assert(_perm.size() == static_cast<size_t>(x.rank()));
         perm = _perm;
         for (dim_t i = 0; i < x.rank(); ++i) {
           if (perm[i] != i) {
