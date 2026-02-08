@@ -23,7 +23,10 @@ namespace ctranslate2 {
       _topk_op(y, values, indices);
 
       Shape output_shape = x.shape();
-      output_shape.back() = _num_samples;
+      if (output_shape.empty())
+        output_shape = {_num_samples};
+      else
+        output_shape.back() = _num_samples;
       values.reshape(output_shape);
       indices.reshape(output_shape);
     }
