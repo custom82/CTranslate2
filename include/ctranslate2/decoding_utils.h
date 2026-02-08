@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <stdexcept>
 
 #include "ops/tile.h"
 #include "storage_view.h"
@@ -10,6 +11,14 @@ namespace ctranslate2 {
 
   inline void split_batch_beam(StorageView& input, dim_t beam_size) {
     Shape shape = input.shape();
+
+    if (shape.empty())
+      throw std::invalid_argument("Cannot split batch and beam dimensions on a scalar tensor");
+    if (beam_size <= 0)
+      throw std::invalid_argument("Beam size must be strictly greater than 0");
+    if (shape[0] % beam_size != 0)
+      throw std::invalid_argument("The first dimension is not divisible by the beam size");
+
     shape.insert(shape.begin() + 1, beam_size);
     shape[0] /= beam_size;
     input.reshape(std::move(shape));
