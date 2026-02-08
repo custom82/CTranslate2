@@ -365,6 +365,8 @@ namespace ctranslate2 {
         const Padder* values_padder,
         dim_t& beam_size) const {
 
+      (void)queries;
+
       queries_proj = std::move(fused_proj);
 
       if (cached_keys == nullptr || cached_keys->empty()) {
