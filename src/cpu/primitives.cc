@@ -652,9 +652,26 @@ namespace ctranslate2 {
                                      float beta,
                                      float* c, dim_t ldc,
                                      const float*) {
-#ifndef CT2_WITH_MKL
+#if !defined(CT2_WITH_MKL) \
+    && !defined(CT2_WITH_DNNL) \
+    && !defined(CT2_WITH_ACCELERATE) \
+    && !defined(CT2_WITH_OPENBLAS) \
+    && !defined(CT2_WITH_RUY)
     (void)a_is_packed;
     (void)b_is_packed;
+    (void)transpose_a;
+    (void)transpose_b;
+    (void)m;
+    (void)n;
+    (void)k;
+    (void)alpha;
+    (void)a;
+    (void)lda;
+    (void)b;
+    (void)ldb;
+    (void)beta;
+    (void)c;
+    (void)ldc;
 #endif
 
     switch (sgemm_backend) {
@@ -909,9 +926,25 @@ namespace ctranslate2 {
                                      float beta,
                                      int32_t* c, dim_t ldc,
                                      const int32_t* a_shift_compensation) {
-#ifndef CT2_WITH_MKL
+#if !defined(CT2_WITH_MKL) \
+    && !defined(CT2_WITH_DNNL) \
+    && !defined(CT2_WITH_RUY)
     (void)a_is_packed;
     (void)b_is_packed;
+    (void)transpose_a;
+    (void)transpose_b;
+    (void)m;
+    (void)n;
+    (void)k;
+    (void)alpha;
+    (void)a;
+    (void)lda;
+    (void)b;
+    (void)ldb;
+    (void)beta;
+    (void)c;
+    (void)ldc;
+    (void)a_shift_compensation;
 #endif
 
     switch (gemm_s8_backend) {
