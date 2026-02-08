@@ -2,7 +2,19 @@
 
 #include <limits>
 
-#if defined(__AVX512F__)
+#if defined(CT2_FORCE_TARGET_ISA_AVX512)
+#  define TARGET_ISA CpuIsa::AVX512
+#  include "cpu/vec_avx512.h"
+#elif defined(CT2_FORCE_TARGET_ISA_AVX2)
+#  define TARGET_ISA CpuIsa::AVX2
+#  include "cpu/vec_avx.h"
+#elif defined(CT2_FORCE_TARGET_ISA_AVX)
+#  define TARGET_ISA CpuIsa::AVX
+#  include "cpu/vec_avx.h"
+#elif defined(CT2_FORCE_TARGET_ISA_NEON)
+#  define TARGET_ISA CpuIsa::NEON
+#  include "cpu/vec_neon.h"
+#elif defined(__AVX512F__)
 #  define TARGET_ISA CpuIsa::AVX512
 #  include "cpu/vec_avx512.h"
 #elif defined(__AVX2__)
